@@ -9,7 +9,12 @@ package main
 
 import "fmt"
 
-func appendMultiple(src []int, n int) []int {
+func main() {
+	foo := make([]int, 1)
+	foo = appendMultipleBroken(foo, 40)
+}
+
+func appendMultipleBroken(src []int, n int) []int {
 	result := make([]int, len(src))
 	var newResult []int
 	copy(result, src)
@@ -23,7 +28,12 @@ func appendMultiple(src []int, n int) []int {
 	return result
 }
 
-func main() {
-	foo := make([]int, 1)
-	foo = appendMultiple(foo, 40)
+// fixed version: reserves enouch capacity to not realloc the slice
+func appendMultiple(src []int, n int) []int {
+	result := make([]int, len(src), len(src)+n)
+	copy(result, src)
+	for i := 0; i < n; i++ {
+		result = append(result, i)
+	}
+	return result
 }
